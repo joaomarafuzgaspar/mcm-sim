@@ -1,3 +1,4 @@
+%function [x, y, phi, r] = kinematics_model(n) 
 n = 1000;
 
 t = linspace(0, 10, n + 1);
@@ -8,9 +9,9 @@ r(1) = -0.1;
 phi = zeros(1, n);
 phi(1) = pi / 4;
 x = zeros(1, n);
-x(1) = 5 * 100;
+x(1) = 500;
 y = zeros(1, n);
-y(1) = 5 * 100;
+y(1) = 500;
 
 % USV Kinematic Model (Nomoto)
 V = 2.5; % [m/s]
@@ -35,7 +36,14 @@ y_direction = y + direction_length * sin(phi);
 X_direction = [x', x_direction'];
 Y_direction = [y', y_direction'];
 
+f1 = figure(1);
+f1.Position = f1.Position + [-300 -250 0 0];
+target_probability = target_location(3000);
+
+f2 = figure(2);
+f2.Position = f2.Position + [300 -250 0 0];
 for i = 1:n
+    f2 = figure(2);
     plot(x(1:i), y(1:i), "LineWidth", 2);
     hold on
     plot(x(i), y(i), '.', 'MarkerSize', 20);
@@ -45,11 +53,13 @@ for i = 1:n
     set(gca, "fontsize", 14); 
     xlabel("Easting (DU)", "Interpreter", "latex", "fontsize", 18);
     ylabel("Northing (DU)", "Interpreter", "latex", "fontsize", 18);
+    title("USV Path", "Interpreter", "latex", "fontsize", 18);
     xlim([0, 30])
     ylim([0, 30])
     grid on
     grid minor
     pause(.001)
 end
-saveas(gca, "Path.png")
-close
+
+%saveas(gca, "Path.png")
+close all

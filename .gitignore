@@ -2,4 +2,7 @@
 .DS_Store
 
 # MATLAB Files
+main.asv
+
+# Images
 Path.png
