@@ -29,12 +29,24 @@ end
 x = x / 100;
 y = y / 100;
 
-% Code for displaying direction (green)
+% Code for displaying direction (orange)
 direction_length = 1.5;
 x_direction = x + direction_length * cos(phi);
 y_direction = y + direction_length * sin(phi);
 X_direction = [x', x_direction'];
 Y_direction = [y', y_direction'];
+
+% Code for displaying sensor range (yellow)
+% range_length = 2;
+% range_angle = pi/3;
+% x_range_right = x + range_length * cos(phi - range_angle / 2);
+% y_range_right = y + range_length * sin(phi - range_angle / 2);
+% X_range_right = [x', x_range_right'];
+% Y_range_right = [y', y_range_right'];
+% x_range_left = x + range_length * cos(phi + range_angle / 2);
+% y_range_left = y + range_length * sin(phi + range_angle / 2);
+% X_range_left = [x', x_range_left'];
+% Y_range_left = [y', y_range_left'];
 
 f1 = figure(1);
 f1.Position = f1.Position + [-300 -250 0 0];
@@ -47,6 +59,8 @@ for i = 1:n
     plot(x(1:i), y(1:i), "LineWidth", 2);
     hold on
     plot(x(i), y(i), '.', 'MarkerSize', 20);
+    %plot(X_range_right(i, :), Y_range_right(i, :), "LineWidth", 1.5, "Color", [0.9290 0.6940 0.1250]);
+    %plot(X_range_left(i, :), Y_range_left(i, :), "LineWidth", 1.5, "Color", [0.9290 0.6940 0.1250]);
     plot(X_direction(i, :), Y_direction(i, :), "LineWidth", 1.5, "Color", [0.8500 0.3250 0.0980]);
     hold off
     set(gca, "TickLabelInterpreter", "latex");

@@ -3,7 +3,7 @@ function target_probability = target_location(n)
     omega_x = linspace(-2, 2, n);
     omega_y = linspace(-2, 2, n);
     [omega_X, omega_Y] = meshgrid(omega_x, omega_y);
-    target_probability = exp(-10 * (omega_X.^2 + omega_Y.^2) / 1^2);
+    target_probability = exp(-10 * ((omega_X - 1).^2 + (omega_Y + 0.5).^2) / 1^2);
 
     image(target_probability, 'CDataMapping', 'scaled');
 
