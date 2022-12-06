@@ -1,15 +1,23 @@
-function target_probability = target_location(n)
+function [omega_X, omega_Y, target_probability] = target_location(n)
+    
+    [omega_X, omega_Y] = meshgrid(0:0.1:n);
+    sigma = 5;
+    Sigma = diag([sigma sigma]);
+    mu = [10; 10];
+    target_probability = zeros(length(omega_X), length(omega_Y));
+    for i = 1:length(omega_X)
+        for j = 1:length(omega_Y)
+            target_probability(j, i) = 1 / (2 * pi * sqrt(det(Sigma))) * exp(- 1/2 * ([omega_X(j, i); omega_Y(j, i)] - mu)' * inv(Sigma) * ([omega_X(j, i); omega_Y(j, i)] - mu));
+        end
+    end
 
-    omega_x = linspace(-2, 2, n);
-    omega_y = linspace(-2, 2, n);
-    [omega_X, omega_Y] = meshgrid(omega_x, omega_y);
-    target_probability = exp(-10 * ((omega_X - 1).^2 + (omega_Y + 0.5).^2) / 1^2);
-
-    image(target_probability, 'CDataMapping', 'scaled');
+    pcolor(omega_X, omega_Y, target_probability); 
+    shading interp;
 
     c = colorbar;
     set(c, "TickLabelInterpreter", "latex");
     set(c, "fontsize", 14); 
+    caxis([0, inf]);
     c.Label.String = 'Probability';
     c.Label.Interpreter = 'latex';
     c.Label.Rotation = -90;
@@ -23,8 +31,4 @@ function target_probability = target_location(n)
     xlabel("Easting (DU)", "Interpreter", "latex", "fontsize", 18);
     ylabel("Northing (DU)", "Interpreter", "latex", "fontsize", 18);
     title("Target Location", "Interpreter", "latex", "fontsize", 18);
-    xticks([0:500:3000]);
-    xticklabels([0:5:30]);
-    yticks([0:500:3000]);
-    yticklabels([0:5:30]);
 end

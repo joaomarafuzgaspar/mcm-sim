@@ -1,3 +1,16 @@
+path_to_visit = zeros(10, 2);
+aux = 500;
+for i = 1:10
+    if mod(i, 2)
+        path_to_visit(i, 1) = 500;
+        path_to_visit(i, 2) = aux;
+        path_to_visit(i + 1, 2) = aux;
+        aux = aux + 500;
+    else
+        path_to_visit(i, 1) = 2500;
+    end
+end
+
 %function [x, y, phi, r] = kinematics_model(n) 
 n = 1000;
 
@@ -48,9 +61,17 @@ Y_direction = [y', y_direction'];
 % X_range_left = [x', x_range_left'];
 % Y_range_left = [y', y_range_left'];
 
+sigma = 5;
+Sigma = diag([sigma sigma]);
+mu = [10; 10];
+get_target_probability = zeros(1, length(x));
+for i = 1:length(x)
+    get_target_probability(i) = 1 / (2 * pi * sqrt(det(Sigma))) * exp(- 1/2 * ([x(i); y(i)] - mu)' * inv(Sigma) * ([x(i); y(i)] - mu));
+end
+
 f1 = figure(1);
 f1.Position = f1.Position + [-300 -250 0 0];
-target_probability = target_location(3000);
+[omega_X, omega_Y, target_probability] = target_location(30);
 
 f2 = figure(2);
 f2.Position = f2.Position + [300 -250 0 0];
@@ -76,4 +97,4 @@ for i = 1:n
 end
 
 %saveas(gca, "Path.png")
-close all
+%close all
