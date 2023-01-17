@@ -1,9 +1,6 @@
-function [omega_X, omega_Y, target_probability] = target_location(n)
+function target_probability = target_location(x, y, mu, Sigma)
     
-    [omega_X, omega_Y] = meshgrid(0:0.1:n);
-    sigma = 5;
-    Sigma = diag([sigma sigma]);
-    mu = [10; 10];
+    [omega_X, omega_Y] = meshgrid(0:0.1:30);
     target_probability = zeros(length(omega_X), length(omega_Y));
     for i = 1:length(omega_X)
         for j = 1:length(omega_Y)
@@ -11,13 +8,14 @@ function [omega_X, omega_Y, target_probability] = target_location(n)
         end
     end
 
-    pcolor(omega_X, omega_Y, target_probability); 
+    pcolor(omega_X, omega_Y, target_probability);
+    %axis equal
     shading interp;
 
     c = colorbar;
     set(c, "TickLabelInterpreter", "latex");
     set(c, "fontsize", 14); 
-    caxis([0, inf]);
+    clim([0, inf]);
     c.Label.String = 'Probability';
     c.Label.Interpreter = 'latex';
     c.Label.Rotation = -90;
@@ -31,4 +29,9 @@ function [omega_X, omega_Y, target_probability] = target_location(n)
     xlabel("Easting (DU)", "Interpreter", "latex", "fontsize", 18);
     ylabel("Northing (DU)", "Interpreter", "latex", "fontsize", 18);
     title("Target Location", "Interpreter", "latex", "fontsize", 18);
+    
+    target_probability = zeros(1, length(x));
+    for i = 1:length(x)
+        target_probability(i) = 1 / (2 * pi * sqrt(det(Sigma))) * exp(- 1/2 * ([x(i); y(i)] - mu)' * inv(Sigma) * ([x(i); y(i)] - mu));
+    end
 end
